@@ -1,10 +1,10 @@
 var options = {
     type: Phaser.AUTO,
-    //width: 320,
-    //height: 480,
+    width: 320,
+    height: 480,
     key: 'the-puzzle-of-minos',
-    width: window.innerWidth * window.devicePixelRatio,
-    height: window.innerHeight * window.devicePixelRatio
+    //width: window.innerWidth * window.devicePixelRatio,
+    //height: window.innerHeight * window.devicePixelRatio
 }
 
 var game = new Phaser.Game(options.width, options.height, options.type, options.key, { init: init, preload: preload, create: create, update: update });
