@@ -1,8 +1,10 @@
 var options = {
     type: Phaser.AUTO,
-    width: 320,
-    height: 480,
-    key: 'the-puzzle-of-minos'
+    //width: 320,
+    //height: 480,
+    key: 'the-puzzle-of-minos',
+    width: window.innerWidth * window.devicePixelRatio,
+    height: window.innerHeight * window.devicePixelRatio
 }
 
 var game = new Phaser.Game(options.width, options.height, options.type, options.key, { init: init, preload: preload, create: create, update: update });
@@ -59,6 +61,8 @@ function preload() {
 }
 
 function create() {
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+
     //Start physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
