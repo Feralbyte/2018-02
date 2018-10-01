@@ -20,6 +20,7 @@ var map;
 var water;
 var ground;
 var objects;
+var bridges;
 
 var speed = 100;
 
@@ -52,6 +53,9 @@ function preload() {
     game.load.atlasXML('ships', 'lib/assets/kenney_piratepack/Spritesheet/shipsMiscellaneous_sheet.png', 'lib/assets/kenney_piratepack/Spritesheet/shipsMiscellaneous_sheet.xml');
 
     game.load.tilemap('scene-01', 'lib/assets/tilemaps/the-puzzle-of-minos-scene-01.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('scene-02', 'lib/assets/tilemaps/the-puzzle-of-minos-scene-02.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('scenes-01-02', 'lib/assets/tilemaps/the-puzzle-of-minos-scenes-01-02.json', null, Phaser.Tilemap.TILED_JSON);
+
     game.load.image('tileset', 'lib/assets/kenney_piratepack/Tilesheet/tiles_sheet.png');
 
     game.load.audio('ship-soundtrack', 'lib/assets/sound/ship-soundtrack.mp3');
@@ -67,7 +71,7 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //Create map
-    map = game.add.tilemap('scene-01');
+    map = game.add.tilemap('scenes-01-02');
     map.addTilesetImage('tiles_sheet', 'tileset');
 
     //Water
@@ -90,7 +94,13 @@ function create() {
     objects.body.enable = true;
     objects.body.immovable = true;
 
-    
+    //Bridges
+    bridges = map.createLayer('Bridges');
+    bridges.resizeWorld();
+
+    game.physics.enable(bridges, Phaser.Physics.ARCADE);
+    bridges.body.enable = true;
+    bridges.body.immovable = true;
 
     //Ship
     ship = game.add.sprite(game.world.width / 2, game.world.height - 80, 'ships', 'ship (1).png');
@@ -174,7 +184,7 @@ function createText() {
     //Text
     text = game.add.text(game.world.centerX, game.world.centerY, "- The puzzle of Minos -\nby\nFeralbyte Interactive");
     text.anchor.setTo(0.5);
-    text.font = 'Pixelar';
+    text.font = 'VT323';
     text.fontSize = 28;
 
     //  x0, y0 - x1, y1
@@ -212,6 +222,8 @@ function shipHitTheGround() {
     teseu.body.collideWorldBounds = true;
 
     teseuIsVisible = true;
+
+    game.camera.follow(teseu, Phaser.Camera.FOLLOW_TOPDOWN);
 }
 
 function out() {
