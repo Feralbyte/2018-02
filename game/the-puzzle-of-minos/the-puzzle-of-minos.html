@@ -4,17 +4,40 @@
         <meta charset='UTF-8'>
         <title>THE PUZZLE OF MINOS - BETA</title>
         
-        <style>canvas { display: block; margin: auto; }</style>
+        <!-- <style>canvas { display: block; margin: auto; }</style> -->
+        <style type = "text/css">
+            body{
+                background: #000000;
+                padding: 0px;
+                margin: 0px;
+            }
+            canvas{
+                display:block;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
 
         <script src="lib/phaser/2.6.2/phaser.min.js"></script>
-        <script src="the-puzzle-of-minos.js"></script>
+        
     </head>
     <body>
-        <!-- <script src="config.js"></script>
-        <script src="ship.js"></script>
-        <script src="map.js"></script>
-        <script src="cursors.js"></script>
-        <script src="physics.js"></script>
-        <script src="game.js"></script> -->
+        <!-- //Carrega as opções do jogo -->
+        <script src="options.js"></script>
+        
+        <!-- //Declaração de variáveis do jogo -->
+        <script src="variables.js"></script>
+
+        <!-- //Carrega as fontes do jogo -->
+        <script src="webfonts.js"></script>
+
+        <!-- //Métodos do jogo, ou seja, lógica do jogo -->
+        <script src="the-puzzle-of-minos.js"></script>
+        
+        <!--//Execução do jogo, ou seja, instância do objeto Phaser.Game-->
+        <script src="game.js"></script>
     </body>
 </html>

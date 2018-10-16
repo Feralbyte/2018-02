@@ -1,49 +1,3 @@
-var options = {
-    type: Phaser.AUTO,
-    width: 320,
-    height: 480,
-    key: 'the-puzzle-of-minos',
-    //width: window.innerWidth * window.devicePixelRatio,
-    //height: window.innerHeight * window.devicePixelRatio
-}
-
-var game = new Phaser.Game(options.width, options.height, options.type, options.key, { init: init, preload: preload, create: create, update: update });
-
-var teseu;
-var teseuLeftTheShip    = false;
-var teseuIsVisible      = false;
-var ship;
-var cursors;
-
-var map;
-
-var water;
-var ground;
-var objects;
-var bridges;
-
-var speed = 100;
-
-var shipSoundtrack;
-
-var text = null;
-var gradient;
-
-//  The Google WebFont Loader will look for this object, so create it before loading the script.
-WebFontConfig = {
-
-    //  'active' means all requested fonts have finished loading
-    //  We set a 1 second delay before calling 'createText'.
-    //  For some reason if we don't the browser cannot render the text the first time it's created.
-    active: function() { game.time.events.add(Phaser.Timer.SECOND * 3, createText, this); },
-
-    //  The Google Fonts we want to load (specify as many as you like in the array)
-    google: {
-      families: ['VT323']
-    }
-
-};
-
 function init() {
 
 }
@@ -121,6 +75,8 @@ function create() {
 
     //Cursors
     cursors = game.input.keyboard.createCursorKeys();
+
+    resize();
 }
 
 function update() {
