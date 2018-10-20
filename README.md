@@ -6,6 +6,6 @@ The Puzzle of Minos é um jogo rápido e prático. Feito para que o jogador poss
 Inspirado na jogabilidade de clássicos dos arcades, como Pac-man e Knightmare, a aproximação simplista permite a pessoas de todas as idades jogarem, ainda que o jogadores mais velhos tenham uma maior conexão.
 Ao chegar em Atenas, Teseu encontra com Procusto, um bêbado de rua, o qual lhe oferece uma informação sobre sua noiva, Ariadne, mas para isso, será necessário vencê-lo em batalha.  
 
-[Play](https://feralbyte.github.io/2018-02/game/the-puzzle-of-minos/the-puzzle-of-minos.html)
+[Clique aqui para jogar!](https://feralbyte.github.io/2018-02/game/the-puzzle-of-minos/the-puzzle-of-minos.html)
 
 
