@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>THE PUZZLE OF MINOS - BETA</title>
+        
+        <!-- <style>canvas { display: block; margin: auto; }</style> -->
+        <style type = "text/css">
+            body{
+                background: #000000;
+                padding: 0px;
+                margin: 0px;
+            }
+            canvas{
+                display:block;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+
+        <script src="phaser.min.js"></script>
+        
+    </head>
+    <body>
+        <!-- //Carrega as opções do jogo -->
+        <script src="js/boot.js"></script>
+        
+        <!-- //Declaração de variáveis do jogo -->
+        <script src="js/load.js"></script>
+
+        <!-- //Carrega as fontes do jogo -->
+        <script src="js/menu.js"></script>
+
+        <!-- //Métodos do jogo, ou seja, lógica do jogo -->
+        <script src="js/play.js"></script>
+
+        <!-- //Métodos do jogo, ou seja, lógica do jogo -->
+        <script src="js/win.js"></script>
+        
+        <!--//Execução do jogo, ou seja, instância do objeto Phaser.Game-->
+        <script src="js/game.js"></script>
+    </body>
+</html>
