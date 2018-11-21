@@ -8,8 +8,8 @@ let gameConfigurations = {
      * must be the current default resolution of this game.
      * iPhone X (15/11/2018)
      */
-    width: 812,
-    height: 375,
+    width: 768,
+    height: 320,
     type: Phaser.AUTO,
     zoom: 2,
     pixelArt: true,
@@ -40,19 +40,10 @@ let gameConfigurations = {
 /**
  * Check if the game is being loaded in a mobile device mode
  */
-let mobileEnvironment = navigator.userAgent.indexOf("Mobile");
-
-if (mobileEnvironment == -1) {
-    mobileEnvironment = navigator.userAgent.indexOf("Tablet");
-}
-
-if (mobileEnvironment == -1) {
-    gameConfigurations.width = 480;
-    gameConfigurations.height = 640;
-} else {
-    gameConfigurations.width = window.innerWidth;
-    gameConfigurations.height = window.innerHeight;
-}
+// if (navigator.userAgent.indexOf("Mobile") != -1 || navigator.userAgent.indexOf("Tablet") != -1) {
+//     gameConfigurations.width = window.innerWidth;
+//     gameConfigurations.height = window.innerHeight;
+// }
 
 /**
  * Global Phaser game assignment

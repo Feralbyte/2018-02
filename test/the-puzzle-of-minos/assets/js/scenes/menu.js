@@ -8,6 +8,8 @@ class MenuScene extends Phaser.Scene {
     }
 
     create() {
+        this.scene.remove('BootScene');
+
         console.log('Menu scene has been created.');
     }
 
