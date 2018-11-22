@@ -9,12 +9,15 @@ class BootScene extends Phaser.Scene {
 
     create() {
         // Add Feralbyte's logo to the screen
-        let logo = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'logo');
+        this.logo = this.add.image(screen.center.x, screen.center.y, 'logo');
         // Scalling Feralbyte's logo to half of its size.
-        logo.setScale(0.5);
+        this.logo.setScale(0.5);
             
-        // Launch splash screen
-        this.scene.launch('SplashScene');
+        this.time.delayedCall(2000, function(){
+            // Launch splash screen
+            this.scene.launch('SplashScene');
+        }, [], this);
+        
     }
 
     update() {

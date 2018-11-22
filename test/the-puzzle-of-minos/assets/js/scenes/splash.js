@@ -4,6 +4,10 @@ class SplashScene extends Phaser.Scene {
     }
 
     preload() {
+        let bootScene = this.scene.get('BootScene');
+        bootScene.logo.setScale(0.4);
+        bootScene.logo.y -= 16;
+
         let progressBar = this.add.graphics();
         let progressBox = this.add.graphics();
 
@@ -94,6 +98,11 @@ class SplashScene extends Phaser.Scene {
         this.load.spritesheet('spritesheet-satiro', 'assets/sprites/spritesheets/characters/satiro.png', { frameWidth: 21.25, frameHeight: 25.75 });
         this.load.spritesheet('spritesheet-teseu', 'assets/sprites/spritesheets/characters/teseu.png', { frameWidth: 21.25, frameHeight: 25.75 });
         this.load.spritesheet('spritesheet-thief', 'assets/sprites/spritesheets/characters/thief.png', { frameWidth: 21.25, frameHeight: 25.75 });
+
+        /**
+         * Miscellaneous sprites
+         */
+        this.load.image('background-menu', 'assets/sprites/menu.png');
         // </all game assets>
     }
 

@@ -40,10 +40,10 @@ let gameConfigurations = {
 /**
  * Check if the game is being loaded in a mobile device mode
  */
-// if (navigator.userAgent.indexOf("Mobile") != -1 || navigator.userAgent.indexOf("Tablet") != -1) {
-//     gameConfigurations.width = window.innerWidth;
-//     gameConfigurations.height = window.innerHeight;
-// }
+if (navigator.userAgent.indexOf("Mobile") != -1 || navigator.userAgent.indexOf("Tablet") != -1) {
+    gameConfigurations.width = screen.width;
+    gameConfigurations.height = screen.height;
+}
 
 /**
  * Global Phaser game assignment
