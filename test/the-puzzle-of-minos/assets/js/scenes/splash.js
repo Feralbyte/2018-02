@@ -4,31 +4,28 @@ class SplashScene extends Phaser.Scene {
     }
 
     preload() {
-        let bootScene = this.scene.get('BootScene');
-        bootScene.logo.setScale(0.4);
-        bootScene.logo.y -= 16;
+        // Add Feralbyte's logo to the screen
+        this.logo = this.add.image(screen.center.x, screen.center.y, 'logo');
+        // Scalling Feralbyte's logo to half of its size.
+        this.logo.setScale(0.4);
 
         let progressBar = this.add.graphics();
-        let progressBox = this.add.graphics();
 
-        progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(window.innerWidth / 2 - 160, window.innerHeight - 104, 320, 20);
-
-        let loadingText = this.make.text({ x: window.innerWidth / 2 - 10, y: window.innerHeight - 112, text: 'Loading...', style: { font: '14px monospace', fill: '#ffffff' } });
+        let loadingText = this.make.text({ x: screen.center.x, y: screen.height - 112, text: 'Loading...', style: textStyle.loadingTitle});
         loadingText.setOrigin(0.5, 0.5);
         
-        let percentText = this.make.text({ x: loadingText.x, y: window.innerHeight - 94, text: '0%', style: { font: '12px monospace', fill: '#f2f2f2' } });
+        let percentText = this.make.text({ x: screen.center.x, y: screen.height - 94, text: '0%', style: textStyle.loadingText });
         percentText.setOrigin(0.5, 0.5);
         
-        var assetText = this.make.text({ x: loadingText.x, y: window.innerHeight - 72, text: '', style: { font: '12px monospace', fill: '#aaaaaa' } });
+        var assetText = this.make.text({ x: screen.center.x, y: screen.height - 72, text: '', style: textStyle.loadingAsset });
         assetText.setOrigin(0.5, 0.5);
 
         this.load.on('progress', function(value) {
             percentText.setText(parseInt(value * 100) + '%');
 
             progressBar.clear();
-            progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect(window.innerWidth / 2 - 158, window.innerHeight - 102, 316 * value, 16);
+            progressBar.fillStyle(0x999999, 0.5);
+            progressBar.fillRect(screen.center.x - 158, screen.height - 102, 316 * value, 16);
         });
         this.load.on('fileprogress', function(file) {
             assetText.setText('asset: ' + file.key);
@@ -38,7 +35,7 @@ class SplashScene extends Phaser.Scene {
             
             percentText.destroy();
             progressBar.destroy();
-            progressBox.destroy();
+            //progressBox.destroy();
             assetText.destroy();
         });
 
@@ -75,17 +72,26 @@ class SplashScene extends Phaser.Scene {
         // this.load.image('tileset-forest', 'assets/sprites/tilesets/forest.png');
         // this.load.image('tileset-maze', 'assets/sprites/tilesets/maze.png');
         // this.load.image('tileset-lastroom', 'assets/sprites/tilesets/lastroom.png');
+        this.load.image('tileset-harbour-water', 'assets/sprites/scenes/harbour/agua.png');
+        this.load.image('tileset-harbour-bridge', 'assets/sprites/scenes/harbour/Ponte.png');
+        this.load.image('tileset-harbour-house', 'assets/sprites/scenes/harbour/Casa 1.png');
 
         /**
          * Tilemaps
          */
         // this.load.tilemapTiledJSON('tilemap-boat', 'assets/sprites/tilemaps/boat.json');
-        // this.load.tilemapTiledJSON('tilemap-harbor', 'assets/sprites/tilemaps/harbor.json');
+        this.load.tilemapTiledJSON('tilemap-harbour', 'assets/sprites/tilemaps/harbour.json');
         // this.load.tilemapTiledJSON('tilemap-town', 'assets/sprites/tilemaps/town.json');
         // this.load.tilemapTiledJSON('tilemap-palace', 'assets/sprites/tilemaps/palace.json');
         // this.load.tilemapTiledJSON('tilemap-forest', 'assets/sprites/tilemaps/forest.json');
         // this.load.tilemapTiledJSON('tilemap-maze', 'assets/sprites/tilemaps/maze.json');
         // this.load.tilemapTiledJSON('tilemap-lastroom', 'assets/sprites/tilemaps/lastroom.json');
+
+        /**
+         * Sprites
+         */
+        this.load.image('water', 'assets/sprites/scenes/boat/agua.png');
+        this.load.image('boat', 'assets/sprites/scenes/boat/Barco.png');
 
         /**
          * Characters
@@ -103,6 +109,7 @@ class SplashScene extends Phaser.Scene {
          * Miscellaneous sprites
          */
         this.load.image('background-menu', 'assets/sprites/menu.png');
+        this.load.image('background-credits', 'assets/sprites/credits.png');
         // </all game assets>
     }
 

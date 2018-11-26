@@ -1,3 +1,5 @@
+let screen = new Screen();
+
 /**
  * Global game configurations
  */
@@ -8,8 +10,8 @@ let gameConfigurations = {
      * must be the current default resolution of this game.
      * iPhone X (15/11/2018)
      */
-    width: 768,
-    height: 320,
+    width: 800,
+    height: 600,
     type: Phaser.AUTO,
     zoom: 2,
     pixelArt: true,
@@ -28,7 +30,7 @@ let gameConfigurations = {
         CreditsScene,
         PauseScene,
         BoatScene,
-        HarborScene,
+        HarbourScene,
         TownScene, 
         PalaceScene,
         ForestScene,
@@ -83,5 +85,9 @@ window.onload = function(){
 
             console.log(`Canvas width and height updated according to the right aspect ratio (w: ${canvas.style.width}, h: ${canvas.style.height}).`);
         }
+
+        screen.calcDimensions();
     }, false);
+
+    
 };

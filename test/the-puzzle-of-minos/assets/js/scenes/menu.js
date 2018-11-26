@@ -8,15 +8,21 @@ class MenuScene extends Phaser.Scene {
         this.menuOptions = [];
     }
 
+    init() {
+        this.scene.remove('BootScene');
+    }
+
     preload() {
 
     }
 
     create() {
-        this.scene.remove('BootScene');
-        
         this.createBackground();
         this.createGameTitle();
+        
+        this.createMenuOption('Play', 'BoatScene', this);
+        this.createMenuOption('Options', 'OptionsScene', this);
+        this.createMenuOption('Credits', 'CreditsScene', this);
     }
 
     update() {
@@ -31,7 +37,7 @@ class MenuScene extends Phaser.Scene {
 
     createBackground() {
         this.background = this.add.image(screen.center.x, screen.center.y, 'background-menu');
-        this.background.setScale(0.25);
+        this.background.setScale(0.5);
         
         this.backgroundInitialPosition = this.background.x;
     }
@@ -45,9 +51,32 @@ class MenuScene extends Phaser.Scene {
         }
     }
 
-    createMenuOption() {
+    createMenuOption(optionText, targetScene, caller) {
         this.index = this.menuOptions.length > 0 ? this.menuOptions.length : 0;
 
-        
+        let menuOption = {
+            x: 96,
+            y: this.index == 0 ? screen.height - 240 : this.menuOptions[this.index - 1].y + 48,
+            text: optionText,
+            style: textStyle.menuOption
+        }
+
+        let text = this.make.text(menuOption);
+        text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        text.setInteractive();    
+
+        text.on('pointerdown', () => { 
+            caller.scene.launch(targetScene); 
+        });
+
+        text.on('pointerover', () => { 
+            text.setStyle(textStyle.menuOption.hover);
+        });
+
+        text.on('pointerout', () => {
+             text.setStyle(textStyle.menuOption); 
+        });
+
+        this.menuOptions.push(menuOption);
     }
 }
