@@ -32,6 +32,35 @@ class HarbourScene extends Phaser.Scene {
 
         this.teseu = this.physics.add.sprite(this.boat.x + 8, this.boat.y, 'spritesheet-teseu', 15);
         this.teseu.setScale(0.6);
+        this.onBoat = true;
+        this.anims.create({
+            key: 'idle',
+            frames: [ { key: 'spritesheet-teseu', frame: 4 } ],
+            frameRate: 20
+        });
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 8, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'up',
+            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 4, end: 7 }),
+            frameRate: 10
+        });
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 12, end: 15 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'up',
+            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
         this.tilemapLayerBridge.setCollisionByProperty({ bridge: true });
         this.physics.add.collider(this.boat, this.tilemapLayerBridge, this.onBoatCollidedBridge, null, this);
@@ -44,17 +73,20 @@ class HarbourScene extends Phaser.Scene {
             this.teseu.x = this.boat.x + 8;
         }
         else {
-            
-            
+            if (!this.teseu.onBoat) {
+
+            }            
         }
     }
 
     onBoatCollidedBridge(boat, tilemapLayerBridge) {
-        this.boat.collidedWithBridge = true;
+        boat.collidedWithBridge = true;
 
         this.teseu.y = screen.center.y;
         this.teseu.x = screen.center.x - 10;
         this.teseu.setScale(1);
+        this.teseu.onBoat = false;
+        this.teseu.anims.play('idle', true);
 
         this.cameras.main.startFollow(this.teseu);
     }
