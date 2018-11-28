@@ -15,6 +15,7 @@ class HarbourScene extends Phaser.Scene {
     }
 
     create() {
+        this.cursors = this.input.keyboard.createCursorKeys();
         this.tilemap = this.make.tilemap({ key: 'tilemap-harbour' });
 
         this.tilemapTilesetWater = this.tilemap.addTilesetImage('agua', 'tileset-harbour-water');
@@ -56,7 +57,7 @@ class HarbourScene extends Phaser.Scene {
             repeat: -1
         });
         this.anims.create({
-            key: 'up',
+            key: 'down',
             frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
@@ -64,7 +65,6 @@ class HarbourScene extends Phaser.Scene {
 
         this.tilemapLayerBridge.setCollisionByProperty({ bridge: true });
         this.physics.add.collider(this.boat, this.tilemapLayerBridge, this.onBoatCollidedBridge, null, this);
-        //this.physics.add.overlap(this.boat, this.tilemapLayerBridge, this.onBoatOverlapsBridge, null, this);
     }
 
     update(time, delta) {
@@ -74,7 +74,33 @@ class HarbourScene extends Phaser.Scene {
         }
         else {
             if (!this.teseu.onBoat) {
+                // Stop any previous movement from the last frame
+                this.teseu.body.setVelocity(0);
 
+                // Horizontal movement
+                if (this.cursors.left.isDown) {
+                    this.teseu.body.setVelocityX(-this.teseu.speed);
+                    this.teseu.anims.play('left', true);
+                } else if (this.cursors.right.isDown) {
+                    this.teseu.body.setVelocityX(this.teseu.speed);
+                    this.teseu.anims.play('right', true);
+                }
+
+                // Vertical movement
+                else if (this.cursors.up.isDown) {
+                    this.teseu.body.setVelocityY(-this.teseu.speed);
+                    this.teseu.anims.play('up', true);
+                } else if (this.cursors.down.isDown) {
+                    this.teseu.body.setVelocityY(this.teseu.speed);
+                    this.teseu.anims.play('down', true);
+                }
+
+                else {
+                    this.teseu.anims.stop();
+                }
+
+                // Normalize and scale the velocity so that player can't move faster along a diagonal
+                this.teseu.body.velocity.normalize().scale(this.teseu.speed);
             }            
         }
     }
@@ -87,6 +113,7 @@ class HarbourScene extends Phaser.Scene {
         this.teseu.setScale(1);
         this.teseu.onBoat = false;
         this.teseu.anims.play('idle', true);
+        this.teseu.speed = 100;
 
         this.cameras.main.startFollow(this.teseu);
     }
