@@ -76,12 +76,17 @@ class SplashScene extends Phaser.Scene {
         this.load.image('tileset-harbour-bridge', 'assets/sprites/scenes/harbour/Ponte.png');
         this.load.image('tileset-harbour-house', 'assets/sprites/scenes/harbour/Casa 1.png');
 
+        this.load.image('tileset-town-house', 'assets/sprites/scenes/town/Casa 1.png');
+        this.load.image('tileset-town-road', 'assets/sprites/scenes/town/Estrada de terra- caminho.png');
+        this.load.image('tileset-town-ground', 'assets/sprites/scenes/town/grama.png');
+        this.load.image('tileset-town-minos-mansion', 'assets/sprites/scenes/town/Mans\u00e3o Minos.png');
+
         /**
          * Tilemaps
          */
         // this.load.tilemapTiledJSON('tilemap-boat', 'assets/sprites/tilemaps/boat.json');
         this.load.tilemapTiledJSON('tilemap-harbour', 'assets/sprites/tilemaps/harbour.json');
-        // this.load.tilemapTiledJSON('tilemap-town', 'assets/sprites/tilemaps/town.json');
+        this.load.tilemapTiledJSON('tilemap-town', 'assets/sprites/tilemaps/town.json');
         // this.load.tilemapTiledJSON('tilemap-palace', 'assets/sprites/tilemaps/palace.json');
         // this.load.tilemapTiledJSON('tilemap-forest', 'assets/sprites/tilemaps/forest.json');
         // this.load.tilemapTiledJSON('tilemap-maze', 'assets/sprites/tilemaps/maze.json');

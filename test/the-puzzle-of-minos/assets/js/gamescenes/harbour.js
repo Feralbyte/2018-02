@@ -23,8 +23,13 @@ class HarbourScene extends Phaser.Scene {
         this.tilemapTilesetHouse = this.tilemap.addTilesetImage('Casa 1', 'tileset-harbour-house');
 
         this.tilemapLayerWater = this.tilemap.createStaticLayer('water', this.tilemapTilesetWater);
+        this.tilemapLayerWater.setCollisionByProperty({ water: true });
+
         this.tilemapLayerBridge = this.tilemap.createStaticLayer('bridge', this.tilemapTilesetBridge);
-        this.tilemapLayerHouse = this.tilemap.createStaticLayer('houses', this.tilemapTilesetHouse);
+        this.tilemapLayerBridge.setCollisionByProperty({ bridge: true });
+
+        // Para habilitar as casas neste cenário, basta remover o comentário da linha abaixo.
+        //this.tilemapLayerHouse = this.tilemap.createStaticLayer('houses', this.tilemapTilesetHouse);
 
         this.boat = this.physics.add.sprite(40, screen.center.y, 'boat');
         this.boat.angle = 90;
@@ -63,7 +68,6 @@ class HarbourScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.tilemapLayerBridge.setCollisionByProperty({ bridge: true });
         this.physics.add.collider(this.boat, this.tilemapLayerBridge, this.onBoatCollidedBridge, null, this);
     }
 
@@ -101,6 +105,10 @@ class HarbourScene extends Phaser.Scene {
 
                 // Normalize and scale the velocity so that player can't move faster along a diagonal
                 this.teseu.body.velocity.normalize().scale(this.teseu.speed);
+
+                if (screen.width - this.teseu.x <= 150) {
+                    this.scene.start('TownScene');
+                }
             }            
         }
     }
@@ -114,7 +122,14 @@ class HarbourScene extends Phaser.Scene {
         this.teseu.onBoat = false;
         this.teseu.anims.play('idle', true);
         this.teseu.speed = 100;
+        this.teseu.body.collideWorldBounds = true;
+
+        this.physics.add.collider(this.teseu, this.tilemapLayerWater, this.onTeseuCollidedWater, null, this);
 
         this.cameras.main.startFollow(this.teseu);
+    }
+
+    onTeseuCollidedWater(teseu, tilemapLayerWater) {
+        teseu.collidedWithWater = true;
     }
 }
