@@ -1,3 +1,5 @@
+/** @type {import("../typings/phaser")} */
+
 let screen = new Screen();
 
 /**
@@ -18,10 +20,15 @@ let gameConfigurations = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 0 },
-            debug: true
+            gravity: { y: 0 }
+            //debug: true
         }
     },
+    // plugins: {
+    //     scene: [
+    //         { key: 'DialogPlugin', plugin: DialogPlugin, mapping: 'dialog' }
+    //     ]
+    // },
     scene: [
         BootScene,
         SplashScene,
@@ -36,7 +43,9 @@ let gameConfigurations = {
         PalaceScene,
         ForestScene,
         MazeScene,
-        LastRoomScene
+        LastRoomScene,
+        DialogScene,
+        BattleScene
     ]
 };
 

@@ -61,6 +61,10 @@ class SplashScene extends Phaser.Scene {
         this.load.audio('gameover', 'assets/audio/effects/gameover.mp3');
         this.load.audio('sword', 'assets/audio/effects/sword.mp3');
         this.load.audio('boss', 'assets/audio/effects/boss.mp3');
+        this.load.audio('sea', 'assets/audio/effects/sea.mp3');
+        this.load.audio('birds', 'assets/audio/effects/birds.mp3');
+        this.load.audio('explosion-1', 'assets/audio/effects/explosion-1.mp3');
+        this.load.audio('collect11', 'assets/audio/effects/collect11.mp3');
 
         /**
          * Tilesets
@@ -115,11 +119,17 @@ class SplashScene extends Phaser.Scene {
          */
         this.load.image('background-menu', 'assets/sprites/menu.png');
         this.load.image('background-credits', 'assets/sprites/credits.png');
+
+        this.load.image('btnnewgame', 'assets/sprites/btnnewgame.png');
+        this.load.image('btncredits', 'assets/sprites/btncredits.png');
+        this.load.image('btnquit', 'assets/sprites/btnquit.png');
+        this.load.image('gametitle', 'assets/sprites/gametitle.png');
+        //this.load.plugin('DialogModalPlugin', 'assets/js/plugins/dialog.js');
         // </all game assets>
     }
 
     create() {
-        this.scene.start('HarbourScene');
+        this.scene.start('MenuScene');
     }
 
     update() {

@@ -6,12 +6,14 @@ class HarbourScene extends Phaser.Scene {
         })
     }
 
-    init() {
-        this.scene.remove('BoatScene');
+    init(data) {
+
+        this.seaSound = data.seaSound;
+        //this.scene.remove('BoatScene');
     }
 
     preload() {
-
+        //this.load.plugin('DialogModalPlugin', 'assets/js/plugins/dialog.js');        
     }
 
     create() {
@@ -27,9 +29,6 @@ class HarbourScene extends Phaser.Scene {
 
         this.tilemapLayerBridge = this.tilemap.createStaticLayer('bridge', this.tilemapTilesetBridge);
         this.tilemapLayerBridge.setCollisionByProperty({ bridge: true });
-
-        // Para habilitar as casas neste cenário, basta remover o comentário da linha abaixo.
-        //this.tilemapLayerHouse = this.tilemap.createStaticLayer('houses', this.tilemapTilesetHouse);
 
         this.boat = this.physics.add.sprite(40, screen.center.y, 'boat');
         this.boat.angle = 90;
@@ -67,8 +66,17 @@ class HarbourScene extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+        this.teseu.runSound = this.sound.add('run', {
+            volume: 0.1
+        });
 
         this.physics.add.collider(this.boat, this.tilemapLayerBridge, this.onBoatCollidedBridge, null, this);
+        
+        this.birdsSound = this.sound.add('birds', {
+            loop: true,
+            volume: 0.2
+        });
+        this.birdsSound.play();
     }
 
     update(time, delta) {
@@ -85,29 +93,35 @@ class HarbourScene extends Phaser.Scene {
                 if (this.cursors.left.isDown) {
                     this.teseu.body.setVelocityX(-this.teseu.speed);
                     this.teseu.anims.play('left', true);
+                    if(!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
                 } else if (this.cursors.right.isDown) {
                     this.teseu.body.setVelocityX(this.teseu.speed);
                     this.teseu.anims.play('right', true);
+                    if(!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
                 }
 
                 // Vertical movement
                 else if (this.cursors.up.isDown) {
                     this.teseu.body.setVelocityY(-this.teseu.speed);
                     this.teseu.anims.play('up', true);
+                    if(!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
                 } else if (this.cursors.down.isDown) {
                     this.teseu.body.setVelocityY(this.teseu.speed);
                     this.teseu.anims.play('down', true);
+                    if(!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
                 }
 
                 else {
                     this.teseu.anims.stop();
+                    this.teseu.runSound.stop();
                 }
 
                 // Normalize and scale the velocity so that player can't move faster along a diagonal
                 this.teseu.body.velocity.normalize().scale(this.teseu.speed);
 
-                if (screen.width - this.teseu.x <= 150) {
-                    this.scene.start('TownScene');
+                if (screen.width - this.teseu.x <= 30) {
+                    this.teseu.runSound.stop();
+                    this.scene.start('TownScene', this);
                 }
             }            
         }
@@ -126,7 +140,9 @@ class HarbourScene extends Phaser.Scene {
 
         this.physics.add.collider(this.teseu, this.tilemapLayerWater, this.onTeseuCollidedWater, null, this);
 
-        this.cameras.main.startFollow(this.teseu);
+        //this.cameras.main.startFollow(this.teseu);
+
+        this.seaSound.setVolume(0.07);
     }
 
     onTeseuCollidedWater(teseu, tilemapLayerWater) {

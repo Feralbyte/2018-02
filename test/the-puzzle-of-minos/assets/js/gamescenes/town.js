@@ -6,6 +6,11 @@ class TownScene extends Phaser.Scene {
         })
     }
 
+    init(data) {
+        data.seaSound.stop();
+        data.teseu.runSound.stop();
+    }
+
     preload() {
 
     }
@@ -17,86 +22,105 @@ class TownScene extends Phaser.Scene {
         this.tilemapTilesetGround = this.tilemap.addTilesetImage('grama', 'tileset-town-ground');
         this.tilemapTilesetRoad = this.tilemap.addTilesetImage('Estrada de terra- caminho', 'tileset-town-road');
         this.tilemapTilesetHouse = this.tilemap.addTilesetImage('Casa 1', 'tileset-town-house');
-        this.tilemapTilesetMinosMansion = this.tilemap.addTilesetImage('Mans\u00e3o Minos', 'tileset-town-minos-mansion');
 
         this.tilemapLayerGround = this.tilemap.createStaticLayer('ground', this.tilemapTilesetGround);
         this.tilemapLayerRoad = this.tilemap.createStaticLayer('road', this.tilemapTilesetRoad);
-
         this.tilemapLayerHouse = this.tilemap.createStaticLayer('houses', this.tilemapTilesetHouse);
         this.tilemapLayerHouse.setCollisionByProperty({ collides: true });
-        
-        //this.tilemapLayerMinosMansion = this.tilemap.createStaticLayer('Mans\u00e3o Minos', this.tilemapTilesetMinosMansion);
-        //this.tilemapLayerMinosMansion.setCollisionByProperty({ collides: true });
 
-        this.teseu = this.physics.add.sprite(50, 100, 'spritesheet-teseu', 15);
-        this.anims.create({
-            key: 'idle',
-            frames: [ { key: 'spritesheet-teseu', frame: 4 } ],
-            frameRate: 20
+        this.teseu = this.physics.add.sprite(50, 50, 'spritesheet-teseu', 15);
+        this.teseu.speed = 100;
+        this.teseu.body.collideWorldBounds = true;
+        this.teseu.runSound = this.sound.add('run', {
+            volume: 0.1
         });
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 8, end: 11 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'up',
-            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 4, end: 7 }),
-            frameRate: 10
-        });
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 12, end: 15 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'down',
-            frames: this.anims.generateFrameNumbers('spritesheet-teseu', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        this.teseu.foundByProcusto = false;
+
+        this.procusto = this.physics.add.sprite(232, 170, 'spritesheet-procusto', 0);
+        this.procusto.setVisible(false);
+        this.procusto.setCollideWorldBounds(true);
+        //this.procusto.setImmovable(true);
 
         this.physics.add.collider(this.teseu, this.tilemapLayerHouse, this.onTeseuCollidedHouse, null, this);
-        this.physics.add.collider(this.teseu, this.tilemapLayerMinosMansion, this.onTeseuCollidedMinosMansion, null, this);
+        this.physics.add.collider(this.teseu, this.procusto, this.onTeseuCollidedProcusto, null, this);
+
+
+        this.scene.launch('DialogScene', {
+            textArray: ['AH, ENFIM EM CRETA, QUE TIPO DE AVENTURA IREMOS ENCONTRAR NESSAS TERRAS?'], 
+            context: this
+        });
+        //createDialogBox(['AH, ENFIM EM CRETA, QUE TIPO DE AVENTURA IREMOS ENCONTRAR NESSAS TERRAS?'], this);
+
+        this.battleStartSound = this.sound.add('explosion-1', {
+            loop: false,
+            volume: 0.08
+        });
     }
 
     update() {
-        // Stop any previous movement from the last frame
-        this.teseu.body.setVelocity(0);
+        if (this.teseu.active == true) {
 
-        // Horizontal movement
-        if (this.cursors.left.isDown) {
-            this.teseu.body.setVelocityX(-this.teseu.speed);
-            this.teseu.anims.play('left', true);
-        } else if (this.cursors.right.isDown) {
-            this.teseu.body.setVelocityX(this.teseu.speed);
-            this.teseu.anims.play('right', true);
+            // Stop any previous movement from the last frame
+            this.teseu.body.setVelocity(0);
+
+            // Horizontal movement
+            if (this.cursors.left.isDown) {
+                this.teseu.body.setVelocityX(-this.teseu.speed);
+                this.teseu.anims.play('left', true);
+                if (!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
+            } else if (this.cursors.right.isDown) {
+                this.teseu.body.setVelocityX(this.teseu.speed);
+                this.teseu.anims.play('right', true);
+                if (!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
+            }
+
+            // Vertical movement
+            else if (this.cursors.up.isDown) {
+                this.teseu.body.setVelocityY(-this.teseu.speed);
+                this.teseu.anims.play('up', true);
+                if (!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
+            } else if (this.cursors.down.isDown) {
+                this.teseu.body.setVelocityY(this.teseu.speed);
+                this.teseu.anims.play('down', true);
+                if (!this.teseu.runSound.isPlaying) this.teseu.runSound.play();
+            }
+
+            else {
+                this.teseu.anims.stop();
+                this.teseu.runSound.stop();
+            }
+
+            // Normalize and scale the velocity so that player can't move faster along a diagonal
+            this.teseu.body.velocity.normalize().scale(this.teseu.speed);
+
+            if (!this.teseu.foundByProcusto) {
+                if (Math.abs(this.teseu.x - this.procusto.x) < 16
+                    || Math.abs(this.teseu.y - this.procusto.y) < 16) {
+                        this.procusto.setVisible(true);
+                        this.physics.accelerateToObject(this.procusto, this.teseu, 300);
+                }
+            }
         }
-
-        // Vertical movement
-        else if (this.cursors.up.isDown) {
-            this.teseu.body.setVelocityY(-this.teseu.speed);
-            this.teseu.anims.play('up', true);
-        } else if (this.cursors.down.isDown) {
-            this.teseu.body.setVelocityY(this.teseu.speed);
-            this.teseu.anims.play('down', true);
-        }
-
-        else {
-            this.teseu.anims.stop();
-        }
-
-        // Normalize and scale the velocity so that player can't move faster along a diagonal
-        this.teseu.body.velocity.normalize().scale(this.teseu.speed);
     }
 
     onTeseuCollidedHouse(teseu, tilemapLayerHouse) {
 
     }
 
-    onTeseuCollidedMinosMansion(teseu, tilemapLayerMinosMansion) {
-
+    onTeseuCollidedProcusto(teseu, procusto) {
+        
+        if (!this.battleStartSound.isPlaying) this.battleStartSound.play();
+        
+        this.cameras.main.shake(200);
+        
+        this.time.delayedCall(1000, () => {
+            this.teseu.setVisible(false);
+            this.procusto.setVisible(false);
+            this.tilemapLayerHouse.setVisible(false);
+            this.tilemapLayerRoad.setVisible(false);
+            this.sound.stopAll();
+            this.scene.pause();
+            this.scene.launch('BattleScene');
+        }, null, this);
     }
 }
