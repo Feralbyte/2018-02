@@ -94,10 +94,10 @@ class TownScene extends Phaser.Scene {
             this.teseu.body.velocity.normalize().scale(this.teseu.speed);
 
             if (!this.teseu.foundByProcusto) {
-                if (Math.abs(this.teseu.x - this.procusto.x) < 16
-                    || Math.abs(this.teseu.y - this.procusto.y) < 16) {
+                if (Math.abs(this.teseu.x - this.procusto.x) < 72
+                    || Math.abs(this.teseu.y - this.procusto.y) < 72) {
                         this.procusto.setVisible(true);
-                        this.physics.accelerateToObject(this.procusto, this.teseu, 300);
+                        this.physics.accelerateToObject(this.procusto, this.teseu, 25);
                 }
             }
         }
@@ -108,14 +108,16 @@ class TownScene extends Phaser.Scene {
     }
 
     onTeseuCollidedProcusto(teseu, procusto) {
-        
+        this.teseu.foundByProcusto = true;
+
         if (!this.battleStartSound.isPlaying) this.battleStartSound.play();
         
         this.cameras.main.shake(200);
         
+        this.teseu.setVisible(false);
+        this.procusto.setVisible(false);
+
         this.time.delayedCall(1000, () => {
-            this.teseu.setVisible(false);
-            this.procusto.setVisible(false);
             this.tilemapLayerHouse.setVisible(false);
             this.tilemapLayerRoad.setVisible(false);
             this.sound.stopAll();

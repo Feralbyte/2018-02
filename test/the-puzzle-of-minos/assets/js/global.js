@@ -143,6 +143,16 @@ class BattleScene extends Phaser.Scene {
             key: 'BattleScene',
             active: false
         });
+
+        this.teseu = {
+            hp: 3,
+            dano: 2
+        };
+        
+        this.procusto = {
+            hp: 5,
+            dano: 1
+        }
     }
 
     init() {
@@ -161,8 +171,7 @@ class BattleScene extends Phaser.Scene {
         this.soundtrack.play();
 
         this.createBattleUI();
-
-        
+        this.createBattleDialog();
     }
 
     createBattleUI() {
@@ -237,6 +246,45 @@ class BattleScene extends Phaser.Scene {
         this.actionMenu.lineStyle(actionMenu.line, actionMenu.lineColor, actionMenu.alpha);
         this.actionMenu.strokeRect(actionMenu.x, actionMenu.y, actionMenu.width, actionMenu.height);
 
+        this.attackButton = this.add.graphics();
+        this.attackButton.fillStyle('0x74b9ff', '0.8');
+        this.attackButton.fillRect(actionMenu.x + 8, actionMenu.y + 8, actionMenu.width - 16, 32);
+        let lblAttack = this.make.text({ x: actionMenu.x + 16, y: actionMenu.y + 16, text: 'Atacar' });
+        let shapeAttack = new Phaser.Geom.Rectangle(actionMenu.x + 8, actionMenu.y + 8, actionMenu.width - 16, 32);
+
+        lblAttack.setInteractive();
+        //lblAttack.setInteractive();
+        // this.attackButton.on('pointerover', () => {
+        //     this.attackButton.fillStyle('0x0984e3', '0.8');
+        //     this.attackButton.fillRect(actionMenu.x + 8, actionMenu.y + 8, actionMenu.width - 16, 32);
+        //     //this.make.text({ x: actionMenu.x + 16, y: actionMenu.y + 16, text: 'Atacar' });
+        // });
+        // this.attackButton.on('pointerout', () => {
+        //     this.attackButton.fillStyle('0x74b9ff', '0.8');
+        //     this.attackButton.fillRect(actionMenu.x + 8, actionMenu.y + 8, actionMenu.width - 16, 32);
+        //     //this.make.text({ x: actionMenu.x + 16, y: actionMenu.y + 16, text: 'Atacar' });
+        // });
+        // this.attackButton.on('pointerdown', () => {
+        //     this.attackButton.fillStyle('0x0984e3', '0.8');
+        //     this.attackButton.fillRect(actionMenu.x + 8, actionMenu.y + 8, actionMenu.width - 16, 32);
+        //     //this.make.text({ x: actionMenu.x + 16, y: actionMenu.y + 16, text: 'Atacar' });
+        // });
+        lblAttack.on('pointerup', () => {
+            // this.attackButton.fillStyle('0x74b9ff', '0.8');
+            // this.attackButton.fillRect(actionMenu.x + 8, actionMenu.y + 8, actionMenu.width - 16, 32);
+            //this.make.text({ x: actionMenu.x + 16, y: actionMenu.y + 16, text: 'Atacar' });
+            this.time.delayedCall(300, () => {
+                this.procusto.hp -= this.teseu.dano;
+                procustoStatus.setText(`Procustos\nhp: ${this.procusto.hp}\ndano: ${this.procusto.dano}`);
+            });
+        });
+
+        this.defendButton = this.add.graphics();
+        this.defendButton.fillStyle('0xff7675', '0.8');
+        this.defendButton.fillRect(actionMenu.x + 8, actionMenu.y + 48, actionMenu.width - 16, 32);
+        this.make.text({ x: actionMenu.x + 16 , y: actionMenu.y + 56, text: 'Defender' });
+
+
         // Enemy  corner
         this.enemyCorner = this.add.graphics();
 
@@ -246,11 +294,80 @@ class BattleScene extends Phaser.Scene {
         this.enemyCorner.lineStyle(enemyCorner.line, enemyCorner.lineColor, enemyCorner.alpha);
         this.enemyCorner.strokeRect(enemyCorner.x, enemyCorner.y, enemyCorner.width, enemyCorner.height);
 
-        this.teseu = this.physics.add.sprite(arena.width / 2 - 128, arena.height / 2 + 64, 'spritesheet-teseu', 4);
-        this.teseu.setScale(4);
+        this.player = this.physics.add.sprite(arena.width / 2 - 128, arena.height / 2 + 64, 'spritesheet-teseu', 4);
+        this.player.setScale(4);
 
-        this.teseu = this.physics.add.sprite(arena.width / 2 + 128, arena.height / 2 - 64, 'spritesheet-procusto', 0);
-        this.teseu.setScale(4);
+        this.enemy = this.physics.add.sprite(arena.width / 2 + 128, arena.height / 2 - 64, 'spritesheet-procusto', 0);
+        this.enemy.setScale(4);
+
+        let teseuStatus = this.make.text({
+            x: playerCorner.x + 16,
+            y: playerCorner.y + 16,
+            text: `Teseu\nhp: ${this.teseu.hp}\ndano: ${this.teseu.dano}`            
+        });
+
+        let procustoStatus = this.make.text({
+            x: enemyCorner.x + 16,
+            y: enemyCorner.y + 16,
+            text: `Procustos\nhp: ${this.procusto.hp}\ndano: ${this.procusto.dano}`
+        });
+    }
+
+    createBattleDialog() {
+        let enemyDialog;
+        this.time.delayedCall(1000, () => {
+            enemyDialog = this.make.text({
+                x: 64,
+                y: 32,
+                text: 'OLHA SÓ SE NÃO É O FAMOSO HERÓI TESEU,\nAQUELE QUE VIVENCIOU VÁRIAS AVENTURAS E BATALHAS.\n'
+                        + 'TENHO UMA INCRÍVEL INFORMAÇÃO PARA VOCÊ,\nGOSTARIA DE SABER?',
+                style: {
+                    font: 'bold 16px Arial',
+                    fill: '#000000'
+                }
+            });
+        }, null, this);
+
+        let playerDialog;
+        this.time.delayedCall(6000, () => {
+            playerDialog = this.make.text({
+                x: 316,
+                y: 214,
+                text: 'VOCÊ É APENAS UM BÊBADO DE RUA,\nO QUE TERIA DE INTERESSANTE PARA CONTAR A MIM?\nUM INCRÍVEL VIAJANTE.\n'
+                        +'JÁ ESTIVE EM MAIS TERRAS\nDO QUE VOCÊ CONHECE GARRAFAS!',
+                style: {
+                    font: 'bold 16px Arial',
+                    fill: '#fdcb6e'
+                }
+            });
+            enemyDialog.setText('');
+        }, null, this);
+        
+
+        this.time.delayedCall(11000, () => {
+            enemyDialog.setText('HA HA HA! VOCÊ É MESMO UM TOLO! APOSTO QUE GANHO DE VOCÊ EM UMA BATALHA');
+            playerDialog.setText('');
+        });
+
+        this.time.delayedCall(16000, () => {
+            playerDialog.setText('EU? UM TOLO?!\nACEITO SEU DESAFIO!\nSE PERDER A BATALHA,\nDEVERÁ ME CONTAR ESSA INFORMAÇÃO\nQUE JULGA TÃO IMPORTANTE,\nCASO CONTRÁRIO,\nPAGAREIS A TI O QUANTO CONSEGUIR BEBER');
+            enemyDialog.setText('');
+        });
+
+        this.time.delayedCall(21000, () => {
+            enemyDialog.x = this.enemy.x;
+            enemyDialog.y = this.enemy.y + 72;
+            enemyDialog.setText('QUE ASSIM SEJA!');
+
+            playerDialog.x = this.player.x;
+            playerDialog.y = this.player.y + 72;
+            playerDialog.setText('');
+        });
+
+        this.time.delayedCall(25000, () => {
+            enemyDialog.setText('');
+            playerDialog.setText('');
+        });
     }
 }
 
